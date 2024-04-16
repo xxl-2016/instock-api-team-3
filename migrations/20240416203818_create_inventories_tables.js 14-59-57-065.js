@@ -8,10 +8,10 @@ exports.up = function (knex) {
     table
       .integer("warehouse_id")
       .unsigned()
-      .references("id")
-      .inTable("warehouses")
-      .onUpdate("CASCADE")
-      .onDelete("CASCADE");
+      // .references("id")
+      // .inTable("warehouses")
+      // .onDelete("CASCADE")
+      // .onUpdate("CASCADE")
     table.string("item_name").notNullable();
     table.string("description").notNullable();
     table.string("category").notNullable();
@@ -29,5 +29,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTable("inventories");
+  return knex.schema.dropTableIfExists("inventories");
 };
