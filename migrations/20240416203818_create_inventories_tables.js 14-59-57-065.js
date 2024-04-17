@@ -8,10 +8,9 @@ exports.up = function (knex) {
     table
       .integer("warehouse_id")
       .unsigned()
-      .references("id")
-      .inTable("warehouses")
-      .onDelete("CASCADE")
+      .references("warehouses.id")
       .onUpdate("CASCADE")
+      .onDelete("CASCADE");
     table.string("item_name").notNullable();
     table.string("description").notNullable();
     table.string("category").notNullable();
