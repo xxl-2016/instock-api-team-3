@@ -11,8 +11,8 @@ app.get("/", (req, res) => {
 const inventoriesRoutes = require("./routes/inventories-routes");
 const warehousesRoutes = require("./routes/warehouses-routes");
 
-app.use("/inventories", inventoriesRoutes);
-app.use("/warehouses", warehousesRoutes);
+app.use("/api/inventories", inventoriesRoutes);
+app.use("/api/warehouses", warehousesRoutes);
 
 app.use((req, res) => {
   res.status(404).send("Page not found");
