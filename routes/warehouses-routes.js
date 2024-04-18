@@ -44,4 +44,75 @@ router.get("/:id/inventories", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const warehouse = await knex("warehouses").where("id", id);
+    if (!warehouse) {
+      return res.status(404).json("Warehouse not found");
+    }
+    res.status(200).json(warehouse);
+  } catch (error) {
+    res.status(500).json(`Error retrieving Warehouse: ${error}`);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const warehouse = await knex("warehouses").where("id", id);
+    if (!warehouse) {
+      return res.status(404).json("Warehouse not found");
+    }
+    const {
+      warehouse_name,
+      address,
+      city,
+      country,
+      contact_name,
+      contact_position,
+      contact_phone,
+      contact_email,
+    } = req.body;
+
+    if (!warehouse_name) {
+      return res.status(400).json("Warehouse name is required");
+    } else if (!address) {
+      return res.status(400).json("Address is required");
+    } else if (!city) {
+      return res.status(400).json("City is required");
+    } else if (!country) {
+      return res.status(400).json("Country is required");
+    } else if (!contact_name) {
+      return res.status(400).json("Contact name is required");
+    } else if (!contact_position) {
+      return res.status(400).json("Contact position is required");
+    } else if (!contact_phone) {
+      return res.status(400).json("Contact phone is required");
+    } else if (!contact_email) {
+      return res.status(400).json("Contact email is required");
+    }
+    const phoneRegex = /^\+\d{1,3}\s\(\d{3}\)\s\d{3}-\d{4}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!phoneRegex.test(contact_phone)) {
+      return res.status(400).json("Invalid phone number");
+    } else if (!emailRegex.test(contact_email)) {
+      return res.status(400).json("Invalid email address");
+    }
+    const updatedWarehouse = await knex("warehouses").where({ id }).update({
+      warehouse_name,
+      address,
+      city,
+      country,
+      contact_name,
+      contact_position,
+      contact_phone,
+      contact_email,
+    });
+    res.status(200).json(updatedWarehouse);
+  } catch (error) {
+    res.status(500).json(`Error updating Warehouse: ${error}`);
+  }
+});
+
 module.exports = router;
