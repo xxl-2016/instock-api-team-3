@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "db:migrate": "knex migrate:latest",
     "db:seed": "knex seed:run"
   },
