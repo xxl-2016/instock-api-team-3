@@ -44,4 +44,46 @@ router.get("/:id/inventories", async (req, res) => {
   }
 });
 
+// create a new warehouse
+router.post("/", async (req, res) => {
+  const body = req.body;
+  const requiredFields = [
+    "warehouse_name",
+    "address",
+    "city",
+    "country",
+    "contact_name",
+    "contact_position",
+    "contact_phone",
+    "contact_email",
+  ];
+
+  // check body for missing fields
+  if (
+    !requiredFields.every((field) => {
+      const exists = body[field];
+      return exists;
+    })
+  ) {
+    return res.status(400).json("Missing properties in the request body");
+  }
+
+  // check phone number
+  const phoneNumberDigits = body.contact_phone.match(/\d/g).length;
+  if (phoneNumberDigits < 10 || phoneNumberDigits > 11) {
+    return res.status(400).json("Invalid phone number");
+  }
+
+  // check email
+  if (!/\S+@\S+\.\S+/.test(body.contact_email)) {
+    return res.status(400).json("Invalid email");
+  }
+
+  // create warehouse
+  const [id] = await knex("warehouses").insert(body);
+  const [warehouse] = await knex("warehouses").where({ id });
+
+  return res.status(200).json(warehouse);
+});
+
 module.exports = router;
