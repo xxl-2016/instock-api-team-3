@@ -11,4 +11,15 @@ router.get("/", async (_req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const inventory = await knex("inventories").where("id", id).first();
+    res.status(200).json(inventory);
+  } catch (error) {
+    res.status(404).json(`Error getting inventory: ${error}`);
+    }
+});
+
 module.exports = router;
