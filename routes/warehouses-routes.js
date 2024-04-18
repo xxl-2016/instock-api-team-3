@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const knex = require("knex")(require("../knexfile"));
+const warehouseControllers = require('../controllers/warehouse-controllers');
 
 router.get("/", async (_req, res) => {
   try {
@@ -10,6 +11,11 @@ router.get("/", async (_req, res) => {
     res.status(500).json(`Error retrieving Users: ${error}`);
   }
 });
+
+
+router.route('/:id')
+.get(warehouseControllers.findOne);
+
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
