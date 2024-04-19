@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const knex = require("knex")(require("../knexfile"));
-const warehouseControllers = require('../controllers/warehouse-controllers');
+const warehouseControllers = require("../controllers/warehouse-controllers");
 
 router.get("/", async (_req, res) => {
   try {
@@ -12,7 +12,7 @@ router.get("/", async (_req, res) => {
   }
 });
 
-router.route('/:id').get(warehouseControllers.findOne);
+router.route("/:id").get(warehouseControllers.findOne);
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
@@ -130,8 +130,8 @@ router.post("/", async (req, res) => {
   }
 
   // check phone number
-  const phoneNumberDigits = body.contact_phone.match(/\d/g).length;
-  if (phoneNumberDigits < 10 || phoneNumberDigits > 11) {
+  const phoneNumberCheck = /^\+\d{1,3}\s\(\d{3}\)\s\d{3}-\d{4}$/;
+  if (!phoneNumberCheck.test(contact_phone)) {
     return res.status(400).json("Invalid phone number");
   }
 
@@ -145,8 +145,6 @@ router.post("/", async (req, res) => {
   const [warehouse] = await knex("warehouses").where({ id });
 
   return res.status(200).json(warehouse);
-
 });
 
 module.exports = router;
-
