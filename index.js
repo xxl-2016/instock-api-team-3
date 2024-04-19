@@ -1,9 +1,12 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
+const app = express();
 require("dotenv").config();
 
+// CORS middleware to allow requests from any origin (our client React app)
 app.use(cors());
+
+// Use JSON middleware to use req.body
 app.use(express.json());
 
 const PORT = process.env.PORT || 6060;
