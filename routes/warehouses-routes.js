@@ -47,6 +47,19 @@ router.get("/:id/inventories", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const warehouse = await knex("warehouses").where("id", id);
+    if (!warehouse) {
+      return res.status(404).json("Warehouse not found");
+    }
+    res.status(200).json(warehouse);
+  } catch (error) {
+    res.status(500).json(`Error retrieving Warehouse: ${error}`);
+  }
+});
+
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
