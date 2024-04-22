@@ -76,7 +76,7 @@ router.put("/:id", async (req, res) => {
       !description ||
       !category ||
       !status ||
-      !quantity
+      quantity < 0
     ) {
       return res.status(400).json("No fields can be left empty");
     }
