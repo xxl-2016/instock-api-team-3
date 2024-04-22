@@ -144,7 +144,7 @@ router.post("/", async (req, res) => {
 
   // check phone number
   const phoneNumberCheck = /^\+\d{1,3}\s\(\d{3}\)\s\d{3}-\d{4}$/;
-  if (!phoneNumberCheck.test(contact_phone)) {
+  if (!phoneNumberCheck.test(body.contact_phone)) {
     return res.status(400).json("Invalid phone number");
   }
 
